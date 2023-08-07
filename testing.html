@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var a = {
+            name: 'it-kamasutra.com',
+            protocol: 'https',
+            maxStudentsCount: 10,
+            isOnline: true,
+            students: ['ivan', 'andrey', 'farid'],
+            classroom: {
+                teacher: {
+                    name: 'wew',
+                    age: 18
+                }
+            }
+        }
+
+        var b = { ...a };
+
+        
+        b.students = [...a.students]
+        b.students.push('New Student')
+
+    </script>
+</body>
+
+</html>
