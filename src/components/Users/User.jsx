@@ -3,7 +3,7 @@ import styles from './Users.module.css'
 import { NavLink } from 'react-router-dom';
 
 const User = ({ user, followingInProgress, unfollow, follow }) => {
-    return <div>
+    return <div style={{marginLeft: "15px"}}>
         <span>
             <div>
                 <NavLink to={"/profile/" + user.id}>
