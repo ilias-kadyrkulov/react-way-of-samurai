@@ -21,23 +21,35 @@ export const withRouter = (Component) => (props) => {
 
 class ProfileContainer extends React.Component {
 
-    componentDidMount() {
+    updateProfile() {
         let userId = this.props.params.userId;
-        
+
         if (!userId) {
             userId = this.props.authorizedUserId;
             if (!userId) {
                 this.props.navigate.push('/login');
             }
         }
-        
+
         this.props.getProfileId(userId)
         this.props.getUserStatus(userId)
     }
 
+    componentDidMount() {
+        this.updateProfile()
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(this.props.params.userId != prevProps.params.userId) {
+            this.updateProfile()
+        }
+    }
 
     render() {
-        return <Profile {...this.props} profile={this.props.profile} status={this.props.status} updateStatus={this.props.updateStatus} />
+        return <Profile {...this.props}
+            profile={this.props.profile}
+            status={this.props.status}
+            updateStatus={this.props.updateStatus} />
     }
 }
 
