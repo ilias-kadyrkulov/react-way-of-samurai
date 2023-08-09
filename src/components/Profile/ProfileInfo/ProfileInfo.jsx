@@ -3,6 +3,13 @@ import styles from './ProfileInfo.module.css'
 import Preloader from '../../common/Preloader/Preloader'
 import ProfileStatusWithHooks from './ProfileStatusWithHooks'
 import userPhoto from '../../../assets/images/user.png'
+// import facebookIcon from '../../../assets/icons/facebook.svg'
+// import instagramIcon from '../../../assets/icons/instagram.svg'
+// import twitterIcon from '../../../assets/icons/twitter.svg'
+// import vkIcon from '../../../assets/icons/vk.svg'
+// import youtubeIcon from '../../../assets/icons/youtube.svg'
+// import websiteIcon from '../../../assets/icons/website.png'
+// import githubIcon from '../../../assets/icons/github.svg'
 import ProfileDataForm from './ProfileDataForm'
 
 const ProfileInfo = ({ profile, status, updateStatus, isOwner, savePhoto, saveProfile, profileUpdateStatus }) => {
@@ -18,7 +25,7 @@ const ProfileInfo = ({ profile, status, updateStatus, isOwner, savePhoto, savePr
 
     const onSubmit = (formData) => {
         saveProfile(formData);
-        if(profileUpdateStatus) {
+        if (profileUpdateStatus) {
             setEditMode(false);
         }
     }
@@ -58,16 +65,21 @@ const ProfileData = ({ profile, isOwner, goToEditMode }) => {
             <b>About me</b>: {profile.aboutMe}
         </div>
         <div>
-            <b>Contacts</b>: {Object.keys(profile.contacts).map(key =>
-                <Contact key={key} contactTitle={key}
+            <b>Contacts</b>:  {Object.keys(profile.contacts).map(key =>
+                <Contact key={key}
+                    contactTitle={key}
                     contactValue={profile.contacts[key]}
-                />)}
+                />
+            )}
         </div>
     </div>
 }
 
-const Contact = ({ contactTitle, contactValue }) => {
-    return <div className={styles.contact}><b>{contactTitle}</b>: {contactValue}</div>
+const Contact = ({ contactTitle, contactValue, icons }) => {
+
+    return <div className={styles.contact}>
+        <img className={styles.icon} src={facebookIcon} /> <b>{contactTitle}</b>: {contactValue}
+    </div>
 }
 
 export default ProfileInfo
