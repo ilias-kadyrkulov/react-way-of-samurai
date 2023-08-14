@@ -11,7 +11,7 @@ import { Provider, connect } from 'react-redux'
 import { compose } from 'redux'
 import { initializeApp } from './redux/app-reducer'
 import Preloader from './components/common/Preloader/Preloader'
-import store from './redux/redux-store'
+import { store } from './redux/redux-store'
 
 class App extends React.Component {
   componentDidMount() {
@@ -31,7 +31,7 @@ class App extends React.Component {
             <Routes>
               <Route path='/dialogs/*' element={<DialogsContainer />} />
               <Route path='/profile/:userId?' element={<ProfileContainer />} />
-              <Route path='/users' element={<UsersContainer />} />
+              <Route path='/users' element={<UsersContainer pageTitle='The Samurai' />} />
               <Route path='/login' element={<Login />} />
             </Routes>
           </Suspense>

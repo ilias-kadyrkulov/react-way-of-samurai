@@ -1,8 +1,16 @@
 import React from 'react'
 import styles from './Users.module.css'
 import { NavLink } from 'react-router-dom';
+import { UserType } from '../../types/types';
 
-const User = ({ user, followingInProgress, unfollow, follow }) => {
+type PropsType = {
+    user: UserType
+    followingInProgress: Array<number> 
+    unfollow: (id: number) => void
+    follow: (id: number) => void
+}
+
+const User: React.FC<PropsType> = ({ user, followingInProgress, unfollow, follow }) => {
     return <div style={{marginLeft: "15px"}}>
         <span>
             <div>

@@ -8,7 +8,7 @@ let initialState = {
     id: null as number | null,
     email: null as string | null,
     login: null as string | null,
-    isAuth: false as boolean,
+    isAuth: false,
     captchaUrl: null as string | null
 }
 export type InitialStateType = typeof initialState
