@@ -12,17 +12,16 @@ const TOGGLE_IS_FOLLOWING_PROGRESS = 'TOGGLE_IS_FOLLOWING_PROGRESS';
 
 
 let initialState = {
-    users: [] as Array<UserType> | null,
-    totalUsersCount: 0 as number | null,
-    pageSize: 10 as number | null,
-    currentPageNumber: 1 as number | null,
-    isFetching: false as boolean,
-    followingInProgress: [] as Array<number> | null,
-    error: null as string | null
+    users: [] as Array<UserType>,
+    totalUsersCount: 0,
+    pageSize: 10,
+    currentPageNumber: 1,
+    isFetching: false,
+    followingInProgress: [] as Array<number>
 }
 export type InitialStateType = typeof initialState
 
-const usersReducer = (state = initialState, action: any): InitialStateType => {
+const usersReducer = (state = initialState, action: ActionTypes): InitialStateType => {
 
     switch (action.type) {
         case FOLLOW:
@@ -36,7 +35,7 @@ const usersReducer = (state = initialState, action: any): InitialStateType => {
                 users: updateObjInArray(state.users, action.userId, "id", { followed: false })
             }
         case SET_USERS: {
-            return { ...state, users: [...action.users] }
+            return { ...state, users: action.users }
         }
         case SET_CURRENT_PAGE: {
             return { ...state, currentPageNumber: action.currentPageNumber }
@@ -60,6 +59,10 @@ const usersReducer = (state = initialState, action: any): InitialStateType => {
     }
 }
 
+type ActionTypes =
+    FollowSuccessActionType | UnfollowSuccessActionType | SetUsersActionType
+    | SetCurrentPageActionType | SetTotalUsersCountActionType | ToggleIsFetchingActionType
+    | ToggleFollowingProgressActionType
 
 type FollowSuccessActionType = {
     type: typeof FOLLOW
@@ -73,9 +76,9 @@ type UnfollowSuccessActionType = {
 export const unfollowSuccess = (userId: number): UnfollowSuccessActionType => ({ type: 'UNFOLLOW', userId })
 type SetUsersActionType = {
     type: typeof SET_USERS
-    users: UserType
+    users: Array<UserType>
 }
-export const setUsers = (users: UserType): SetUsersActionType => ({ type: 'SET_USERS', users })
+export const setUsers = (users: Array<UserType>): SetUsersActionType => ({ type: 'SET_USERS', users })
 type SetCurrentPageActionType = {
     type: typeof SET_CURRENT_PAGE
     currentPageNumber: number
@@ -103,7 +106,7 @@ export const requestUsers = (page: number, pageSize: number) => {
     return async (dispatch: any) => {
         dispatch(toggleIsFetching(true))
         dispatch(setCurrentPage(page))
-
+        
         let data = await usersAPI.getUsers(page, pageSize);
         dispatch(toggleIsFetching(false))
         dispatch(setUsers(data.items))

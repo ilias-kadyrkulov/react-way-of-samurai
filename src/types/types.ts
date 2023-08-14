@@ -14,7 +14,7 @@ export type ContactsType = {
     mainLink: string,
 }
 export type PhotosType = {
-    small: string,
+    small: string
     large: string
 }
 export type ProfileType = {

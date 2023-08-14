@@ -12,7 +12,14 @@ import { withAuthRedirect } from '../../hoc/withAuthRedirect'
 import { compose } from 'redux'
 import { UserType } from '../../types/types'
 import { RootState } from '../../redux/redux-store'
-import { getCurrentPageNumber, getFollowingInProgress, getIsFetching, getPageSize, getTotalUsersCount, getUsers } from '../../redux/users-selectors'
+import {
+    getCurrentPageNumber,
+    getFollowingInProgress,
+    getIsFetching,
+    getPageSize,
+    getTotalUsersCount,
+    getUsers
+} from '../../redux/users-selectors'
 
 
 type MapStatePropsType = {
@@ -50,7 +57,7 @@ class UsersContainer extends React.Component<PropsType> {
     render() {
 
         return <>
-        <h2>{this.props.pageTitle}</h2>
+            <h2>{this.props.pageTitle}</h2>
             {this.props.isFetching ? <Preloader /> : null}
             {
                 !this.props.isFetching ? <Users

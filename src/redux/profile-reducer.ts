@@ -17,7 +17,7 @@ let initialState = {
         { id: 3, message: 'It\'s my first post.', likesCount: 25 },
     ] as Array<PostType>,
     profile: null as ProfileType | null,
-    profileUpdateStatus: false as boolean,
+    profileUpdateStatus: false,
     status: ''
 }
 export type InitialStateType = typeof initialState;
@@ -69,22 +69,22 @@ type SetUserProfileActionType = {
 }
 export const setUserProfile = (profile: ProfileType): SetUserProfileActionType => ({ type: 'SET_USER_PROFILE', profile })
 type SetStatusActionType = {
-    type: typeof SET_STATUS, 
+    type: typeof SET_STATUS,
     status: string
 }
 export const setStatus = (status: string): SetStatusActionType => ({ type: 'SET_STATUS', status })
 type DeletePostActionType = {
-    type: typeof DELETE_POST, 
+    type: typeof DELETE_POST,
     postId: number
 }
 export const deletePost = (postId: number): DeletePostActionType => ({ type: 'DELETE_POST', postId })
 type SetPhotosSuccessActionType = {
-    type: typeof SET_PHOTOS_SUCCESS, 
+    type: typeof SET_PHOTOS_SUCCESS,
     photos: PhotosType
 }
 export const setPhotosSuccess = (photos: PhotosType): SetPhotosSuccessActionType => ({ type: 'SET_PHOTOS_SUCCESS', photos })
 type SetProfileUpdateStatusActionType = {
-    type: typeof SET_PROFILE_UPDATE_STATUS, 
+    type: typeof SET_PROFILE_UPDATE_STATUS,
     profileStatus: boolean
 }
 export const setProfileUpdateStatus = (profileStatus: boolean): SetProfileUpdateStatusActionType => ({ type: 'SET_PROFILE_UPDATE_STATUS', profileStatus })
@@ -99,26 +99,26 @@ export const getUserStatus = (userId: number) => async (dispatch: any) => {
     dispatch(setStatus(response.data))
 }
 export const updateStatus = (status: string) => async (dispatch: any) => {
-    let response = await profileAPI.updateStatus(status)
-    if (response.data.resultCode === 0) {
+    let data = await profileAPI.updateStatus(status)
+    if (data.resultCode === 0) {
         dispatch(setStatus(status))
     }
 }
-export const savePhoto = (file: any) => async (dispatch: any) => {
+export const savePhoto = (file: File) => async (dispatch: any) => {
     let response = await profileAPI.savePhoto(file)
     if (response.data.resultCode === 0) {
-        dispatch(setPhotosSuccess(response.data.data.photos))
+        dispatch(setPhotosSuccess(response.data.data))
     }
 }
 export const saveProfile = (profile: ProfileType) => async (dispatch: any, getState: any) => {
     const userId = getState().auth.id;
-    let response = await profileAPI.saveProfile(profile)
-    if (response.data.resultCode === 0) {
+    let data = await profileAPI.saveProfile(profile)
+    if (data.resultCode === 0) {
         dispatch(setProfileUpdateStatus(true))
         dispatch(getProfileId(userId))
     } else {
-        dispatch(stopSubmit('editProfile', { "contacts": { "facebook": response.data.messages[0] } }))
-        return Promise.reject(response.data.messages[0])
+        dispatch(stopSubmit('editProfile', { "contacts": { "facebook": data.messages[0] } }))
+        return Promise.reject(data.messages[0])
     }
 }
 
