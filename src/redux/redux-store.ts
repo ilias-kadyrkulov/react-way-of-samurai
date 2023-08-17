@@ -25,4 +25,7 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>
 
+type PropertiesTypes<T> = T extends {[key: string]: infer U } ? U : never // conditional type (infer, mapped type)
+export type InferActionsTypes<T extends {[key: string]: (...args: any) => any }> = ReturnType<PropertiesTypes<T>> // constraint
+
 // window.store = store

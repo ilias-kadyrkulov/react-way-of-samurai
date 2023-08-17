@@ -29,10 +29,9 @@ const ProfileInfo = ({ profile, status, updateStatus, isOwner, savePhoto, savePr
             setEditMode(false);
         }
     }
-
+console.log(profile);
     return (
         <div>
-
             <div className={styles.profileDesc}>
                 <img className={styles.userAvatar}
                     src={profile.photos.large || userPhoto} />
@@ -75,7 +74,7 @@ const ProfileData = ({ profile, isOwner, goToEditMode }) => {
     </div>
 }
 
-const Contact = ({ contactTitle, contactValue, icons }) => {
+const Contact = ({ contactTitle, contactValue }) => {
 
     return <div className={styles.contact}>
         <img className={styles.icon} src={facebookIcon} /> <b>{contactTitle}</b>: {contactValue}

@@ -11,21 +11,21 @@ const ProfileDataForm = ({ handleSubmit, profile, error }) => {
             {error}
         </div>}
         <div>
-            <b>Fullname</b>: {createField("Full name...", [], 'fullName', Input)}
+            <b>Fullname</b>: {createField("Full name...", 'fullName', [], Input)}
         </div>
         <div>
-            <b>Looking for a job</b>: {createField("Looking for a job...", [], 'lookingForAJob', Input, { type: 'checkbox' })}
+            <b>Looking for a job</b>: {createField("Looking for a job...", 'lookingForAJob', [], Input, { type: 'checkbox' })}
         </div>
         <div>
-            <b>My professional skills</b>: {createField("My professional skills...", [], 'lookingForAJobDescription', Textarea)}
+            <b>My professional skills</b>: {createField("My professional skills...", 'lookingForAJobDescription', [], Textarea)}
         </div>
         <div>
-            <b>About me</b>: {createField("About me...", [], 'aboutMe', Textarea)}
+            <b>About me</b>: {createField("About me...", 'aboutMe', [], Textarea)}
         </div>
         <div>
             <b>Contacts</b>: {Object.keys(profile.contacts).map(key =>
                 <div key={key} className={styles.contact}>
-                    <b>{key}: {createField(key, [], 'contacts.' + key, Input)}</b>
+                    <b>{key}: {createField(key, 'contacts.' + key, [], Input)}</b>
                 </div>)}
         </div>
     </form>

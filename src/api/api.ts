@@ -107,6 +107,7 @@ export const profileAPI = {
                 'Content-Type': 'multipart/form-data' // это больше не json формат, когда не было js и AJAX - пользовались этим (отправка данных на сервер)
             }
         })
+        .then(res => res.data)
     },
     saveProfile(profile: ProfileType) {
         return instance.put<UpdateStatusProfileResponseType>('profile', profile)

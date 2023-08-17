@@ -47,7 +47,7 @@ const profileReducer = (state = initialState, action: any): InitialStateType => 
             return { ...state, posts: state.posts.filter(p => p.id != action.postId) }
         }
         case SET_PHOTOS_SUCCESS: {
-            return { ...state, profile: { ...state.profile, photos: action.photos } as ProfileType }
+            return { ...state, profile: { ...state.profile, photos: action.photos.photos } as ProfileType }
         }
         case SET_PROFILE_UPDATE_STATUS: {
             return { ...state, profileUpdateStatus: action.profileStatus }
@@ -105,9 +105,9 @@ export const updateStatus = (status: string) => async (dispatch: any) => {
     }
 }
 export const savePhoto = (file: File) => async (dispatch: any) => {
-    let response = await profileAPI.savePhoto(file)
-    if (response.data.resultCode === 0) {
-        dispatch(setPhotosSuccess(response.data.data))
+    let data = await profileAPI.savePhoto(file)
+    if (data.resultCode === 0) {
+        dispatch(setPhotosSuccess(data.data))
     }
 }
 export const saveProfile = (profile: ProfileType) => async (dispatch: any, getState: any) => {
