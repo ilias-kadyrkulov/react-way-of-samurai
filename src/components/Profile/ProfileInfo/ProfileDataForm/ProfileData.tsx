@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { FC } from 'react'
 import styles from '../ProfileInfo.module.css'
 import facebookIcon from '../../../../assets/icons/facebook.svg'
+import { ContactsType, ProfileType } from '../../../../types/types'
 
-const ProfileData = ({ profile, isOwner, goToEditMode }) => {
+type PropsType = {
+    profile: ProfileType
+    isOwner: boolean
+    goToEditMode: () => void
+}
+
+const ProfileData: FC<PropsType> = ({ profile, isOwner, goToEditMode }) => {
     return <div>
         {isOwner && <div><button onClick={goToEditMode}>edit</button></div>}
         <div>
@@ -18,17 +25,24 @@ const ProfileData = ({ profile, isOwner, goToEditMode }) => {
             <b>About me</b>: {profile.aboutMe}
         </div>
         <div>
-            <b>Contacts</b>:  {Object.keys(profile.contacts).map(key =>
-                <Contact key={key}
-                    contactTitle={key}
-                    contactValue={profile.contacts[key]}
-                />
-            )}
+            <b>Contacts</b>:  {
+                Object.keys(profile.contacts)
+                    .map(key =>
+                        <Contact key={key}
+                            contactTitle={key}
+                            contactValue={profile.contacts[key as keyof ContactsType]}
+                        />
+                    )}
         </div>
     </div>
 }
 
-const Contact = ({ contactTitle, contactValue }) => {
+type ContactsPropsType = {
+    contactTitle: string
+    contactValue: string
+}
+
+const Contact: FC<ContactsPropsType> = ({ contactTitle, contactValue }) => {
     return <div className={styles.contact}>
         <img className={styles.icon} src={facebookIcon} /> <b>{contactTitle}</b>: {contactValue}
     </div>

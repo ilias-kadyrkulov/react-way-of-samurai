@@ -14,7 +14,7 @@ let state = {
 
 it('length of posts should be incremented', () => {
     // 1. start data
-    let action = actions.addPostCreator('salam aleikum')
+    let action = actions.addPost('salam aleikum')
 
     // 2. action
     let newState = profileReducer(state, action)
@@ -24,7 +24,7 @@ it('length of posts should be incremented', () => {
 })
 
 it('message of new post should be correct', () => {
-    let action = actions.addPostCreator('salam aleikum')
+    let action = actions.addPost('salam aleikum')
 
     let newState = profileReducer(state, action)
 

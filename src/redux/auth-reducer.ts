@@ -59,7 +59,6 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
         }
         let message = data.messages.length > 0 ? data.messages[0] : 'Some error';
         dispatch(stopSubmit('login', { _error: message }))
-        dispatch({ type: 'dsds' })
     }
 }
 export const getCaptchaUrl = (): ThunkType => async (dispatch) => {

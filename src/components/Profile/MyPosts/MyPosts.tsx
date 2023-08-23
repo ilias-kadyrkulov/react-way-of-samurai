@@ -1,15 +1,22 @@
-import React from 'react'
+import React, { FC } from 'react'
 import styles from './MyPosts.module.css'
 import Post from './Post/Post'
-import AddNewPostForm from './AddNewPostForm/AddNewPostForm'
+import AddNewPostForm, { AddPostFormValuesType } from './AddNewPostForm/AddNewPostForm'
+import { PostType } from '../../../types/types'
 
+export type MapPropsType = {
+    posts: Array<PostType>
+}
+export type DispatchPropsType = {
+    addPost: (newPostText: string) => void
+}
 
-const MyPosts = (props) => {
-    
-    const addNewPost = (formData) => {
+const MyPosts: FC<MapPropsType & DispatchPropsType> = (props) => {
+
+    const addNewPost = (formData: AddPostFormValuesType) => {
         props.addPost(formData.newPostText);
     }
-    
+
     return (
         <div className={styles.myPosts}>
             <h3>My Posts</h3>
@@ -26,5 +33,6 @@ const MyPosts = (props) => {
     )
 }
 
+const MyPostsMemorized = React.memo(MyPosts)
 
-export default MyPosts
+export default MyPostsMemorized

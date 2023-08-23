@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { FC } from 'react'
 import styles from './Header.module.css'
 import { NavLink } from 'react-router-dom'
 
-const Header = (props) => {
+export type MapPropsType = {
+    isAuth: boolean
+    login: string | null
+}
+export type DispatchPropsType = {
+    logout: () => void
+}
 
+const Header: FC<MapPropsType & DispatchPropsType> = (props) => {
     return (
         <header className={styles.header}>
             <img src="https://png.pngtree.com/png-vector/20221018/ourmid/pngtree-whatsapp-mobile-software-icon-png-image_6315991.png" alt="Logo" />

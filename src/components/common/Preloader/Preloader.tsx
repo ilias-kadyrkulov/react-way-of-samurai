@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { FC } from 'react'
 import loader from '../../../assets/loader.svg'
+import styles from './Preloader.module.css'
 
-const Preloader = () => {
+const Preloader: FC = () => {
     return (
-        <img src={loader} />
+        <img className={styles.loader} src={loader} />
     )
 }
 

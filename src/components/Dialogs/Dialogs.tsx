@@ -1,15 +1,26 @@
-import React from 'react'
+import React, { FC } from 'react'
 import styles from './Dialogs.module.css'
 import DialogItem from './DialogItem/DialogItem'
 import MessageItem from './MessageItem/MessageItem'
 import AddMessageForm from './AddMessageForm/AddMessageForm'
+import { InitialStateType } from '../../redux/dialogs-reducer'
 
+export type MapPropsType = {
+    dialogsPage: InitialStateType
+}
 
-const Dialogs = (props) => {
+export type DispatchPropsType = {
+    sendMessage: (newMessageBody: string) => void
+}
 
+export type NewMessageFormValuesType = {
+    newMessageBody: string
+}
+
+const Dialogs: FC<MapPropsType & DispatchPropsType> = (props) => {
     let state = props.dialogsPage;
 
-    const addNewMessage = (formData) => {
+    const addNewMessage = (formData: NewMessageFormValuesType) => {
         props.sendMessage(formData.newMessageBody);
     }
 
@@ -29,6 +40,5 @@ const Dialogs = (props) => {
         </div>
     )
 }
-
 
 export default Dialogs

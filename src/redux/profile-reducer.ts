@@ -48,7 +48,7 @@ const profileReducer = (state = initialState, action: ActionsTypes): InitialStat
 }
 
 export const actions = {
-    addPostCreator: (newPostText: string) => ({ type: 'sn/profile/add_post', newPostText } as const),
+    addPost: (newPostText: string) => ({ type: 'sn/profile/add_post', newPostText } as const),
     setUserProfile: (profile: ProfileType) => ({ type: 'sn/profile/set_user_profile', profile } as const),
     setStatus: (status: string) => ({ type: 'sn/profile/set_status', status } as const),
     deletePost: (postId: number) => ({ type: 'sn/profile/delete_post', postId } as const),
@@ -56,7 +56,7 @@ export const actions = {
     setProfileUpdateStatus: (profileStatus: boolean) => ({ type: 'sn/profile/set_profile_update_status', profileStatus } as const)
 }
 
-export const getProfileId = (userId: number): ThunkType => async (dispatch, getState) => {
+export const getProfileId = (userId: number): ThunkType => async (dispatch) => {
     let data = await profileAPI.getProfileId(userId)
     dispatch(actions.setUserProfile(data))
 }

@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { FC } from 'react'
 import './Navbar.css'
 import { NavLink } from 'react-router-dom'
 import CustomLink from '../CustomLink/CustomLink';
 
 const setActive = ({ isActive }) => isActive ? 'active-link' : '';
 
-const Navbar = () => {
+const Navbar: FC = () => {
     return (
         <nav className='nav'>
             <div>
