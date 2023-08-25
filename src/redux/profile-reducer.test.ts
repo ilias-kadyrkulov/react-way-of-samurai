@@ -5,7 +5,7 @@ let state = {
     posts: [
         { id: 1, message: 'Hi, how r u?', likesCount: 11 },
         { id: 2, message: 'Not bad.', likesCount: 19 },
-        { id: 3, message: 'It\'s my first post.', likesCount: 25 },
+        { id: 3, message: 'It\'s my first post.', likesCount: 25 }
     ],
     profile: null,
     profileUpdateStatus: false,

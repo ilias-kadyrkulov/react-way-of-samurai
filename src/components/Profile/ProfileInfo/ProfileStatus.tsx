@@ -1,12 +1,12 @@
 import React, { ChangeEvent } from 'react'
 
 type PropsType = {
-    status: string,
+    status: string
     updateStatus: (newStatus: string) => void
 }
 
 type StateType = {
-    editMode: boolean,
+    editMode: boolean
     status: string
 }
 

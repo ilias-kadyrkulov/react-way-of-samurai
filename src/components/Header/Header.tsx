@@ -10,7 +10,7 @@ export type DispatchPropsType = {
     logout: () => void
 }
 
-const Header: FC<MapPropsType & DispatchPropsType> = (props) => {
+const Header: FC<MapPropsType & DispatchPropsype> = (props) => {
     return (
         <header className={styles.header}>
             <img src="https://png.pngtree.com/png-vector/20221018/ourmid/pngtree-whatsapp-mobile-software-icon-png-image_6315991.png" alt="Logo" />
