@@ -1,11 +1,11 @@
 import React, { FC, useEffect } from 'react'
 import { connect } from 'react-redux'
 import {
+    FilterType,
     follow,
     requestUsers,
-    unfollow
-}
-    from '../../redux/users-reducer'
+    unfollow,
+} from '../../redux/users-reducer'
 import Users from './Users'
 import Preloader from '../common/Preloader/Preloader'
 import { withAuthRedirect } from '../../hoc/withAuthRedirect'
@@ -18,9 +18,9 @@ import {
     getIsFetching,
     getPageSize,
     getTotalUsersCount,
-    getUsers
+    getUsers,
+    getUsersFilter,
 } from '../../redux/users-selectors'
-
 
 type MapPropsType = {
     currentPageNumber: number
@@ -29,47 +29,60 @@ type MapPropsType = {
     totalUsersCount: number
     users: Array<UserType>
     followingInProgress: Array<number>
+    filter: FilterType
 }
 
 type DispatchPropsType = {
     unfollow: (id: number) => void
     follow: (id: number) => void
-    getUsers: (currentPageNumber: number, pageSize: number) => void
+    getUsers: (
+        currentPageNumber: number,
+        pageSize: number,
+        filter: FilterType
+    ) => void
 }
 
-type OwnPropsType = {
+type PropsType = {
     pageTitle: string
 }
 
-type PropsType = MapPropsType & DispatchPropsType & OwnPropsType
-
-const UsersContainer: FC<PropsType> = (props) => {
+const UsersContainer: FC<MapPropsType & DispatchPropsType & PropsType> = (
+    props
+) => {
     useEffect(() => {
-        const { currentPageNumber, pageSize } = props
-        props.getUsers(currentPageNumber, pageSize)
+        const { currentPageNumber, pageSize, filter } = props
+        props.getUsers(currentPageNumber, pageSize, filter)
     }, [])
 
     const onPageChanged = (pageNumber: number) => {
-        const { pageSize } = props
-        props.getUsers(pageNumber, pageSize)
+        const { pageSize, filter } = props
+        props.getUsers(pageNumber, pageSize, filter)
     }
 
-    return <>
-        <h2>{props.pageTitle}</h2>
-        {props.isFetching ? <Preloader /> : null}
-        {
-            !props.isFetching ? <Users
-                totalUsersCount={props.totalUsersCount}
-                pageSize={props.pageSize}
-                currentPageNumber={props.currentPageNumber}
-                onPageChanged={onPageChanged}
-                users={props.users}
-                follow={props.follow}
-                unfollow={props.unfollow}
-                followingInProgress={props.followingInProgress}
-            /> : null
-        }
-    </>
+    const onFilterChanged = (filter: FilterType) => {
+        const { pageSize } = props
+        props.getUsers(1, pageSize, filter) //NOTE - в filter приходят term и friend, и запрос идет уже с ними; term м.б. '', а сервер проигнорирует friend, если будет null
+    }
+
+    return (
+        <>
+            <h2 style={{ marginLeft: '10px' }}>{props.pageTitle}</h2>
+            {props.isFetching ? <Preloader /> : null}
+            {!props.isFetching ? (
+                <Users
+                    totalUsersCount={props.totalUsersCount}
+                    pageSize={props.pageSize}
+                    currentPageNumber={props.currentPageNumber}
+                    onPageChanged={onPageChanged}
+                    onFilterChanged={onFilterChanged}
+                    users={props.users}
+                    follow={props.follow}
+                    unfollow={props.unfollow}
+                    followingInProgress={props.followingInProgress}
+                />
+            ) : null}
+        </>
+    )
 }
 
 let mapStateToProps = (state: RootState): MapPropsType => ({
@@ -78,13 +91,14 @@ let mapStateToProps = (state: RootState): MapPropsType => ({
     isFetching: getIsFetching(state),
     totalUsersCount: getTotalUsersCount(state),
     users: getUsers(state),
-    followingInProgress: getFollowingInProgress(state)
+    followingInProgress: getFollowingInProgress(state),
+    filter: getUsersFilter(state)
 })
 
 export default compose(
-    // <TStateProps = {}, TDispatchProps = {}, TOwnProps = {}, State = DefaultState
-    connect<MapPropsType, DispatchPropsType, OwnPropsType, RootState>(
+    connect<MapPropsType, DispatchPropsType, PropsType, RootState>(
         mapStateToProps,
-        { follow, unfollow, getUsers: requestUsers })
+        { follow, unfollow, getUsers: requestUsers }
+    )
     // withAuthRedirect
 )(UsersContainer)
