@@ -1,16 +1,18 @@
 import React, { FC } from 'react'
 import { Formik, Form, Field } from 'formik'
 import { FilterType } from '../../../redux/users-reducer'
+import { useAppSelector } from '../../../hooks/redux'
 
 const usersSearchFormValidate = (values: any) => {
     const errors = {}
     return errors
 }
 
+type FriendFormType = 'null' | 'true' | 'false'
 type FormType = {
     // NOTE - для ручного преобразования значений values
     term: string
-    friend: 'null' | 'true' | 'false'
+    friend: FriendFormType
 }
 
 type PropsType = {
@@ -18,6 +20,8 @@ type PropsType = {
 }
 
 const UsersSearchForm: FC<PropsType> = React.memo((props) => {
+    const filter = useAppSelector((state) => state.usersPage.filter)
+
     const submit = (
         values: FormType,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
@@ -30,7 +34,7 @@ const UsersSearchForm: FC<PropsType> = React.memo((props) => {
                     ? null
                     : values.friend === 'true'
                     ? true
-                    : false,
+                    : false
         } //!SECTION
 
         props.onFilterChanged(filter) //NOTE - вызов (), которая сделает запрос на сервер, т.е. при submit формы
@@ -38,7 +42,8 @@ const UsersSearchForm: FC<PropsType> = React.memo((props) => {
     }
     return (
         <Formik
-            initialValues={{ term: '', friend: 'null' }} //NOTE - начальные значения, так же как и в redux-form
+            enableReinitialize //NOTE - перезагрузка формы при смене initialValues (filter; после перезагрузки страницы значения не стираются)
+            initialValues={{ term: filter.term, friend: String(filter.friend) as FriendFormType }} //NOTE - начальные значения, так же как и в redux-form
             validate={usersSearchFormValidate} // NOTE - валидация на будущее
             // @ts-ignore
             onSubmit={submit} //NOTE - submit - callback(values: {term, friend}(FormType))

@@ -12,9 +12,10 @@ let initialState = {
     currentPageNumber: 1,
     isFetching: false,
     followingInProgress: [] as Array<number>,
-    filter: {                       // NOTE - filter свойство 
-      term: '',
-      friend: null as null | boolean
+    filter: {
+        // NOTE - filter свойство
+        term: '',
+        friend: null as null | boolean
     }
 }
 
@@ -27,15 +28,15 @@ const usersReducer = (
             return {
                 ...state,
                 users: updateObjInArray(state.users, action.userId, 'id', {
-                    followed: true,
-                }), // оптимизировали дублирование кода вспомогательной функцией, которая помогает иммутабельно изменить объект в массиве
+                    followed: true
+                }) // оптимизировали дублирование кода вспомогательной функцией, которая помогает иммутабельно изменить объект в массиве
             }
         case 'sn/users/unfollow':
             return {
                 ...state,
                 users: updateObjInArray(state.users, action.userId, 'id', {
-                    followed: false,
-                }),
+                    followed: false
+                })
             }
         case 'sn/users/set_users': {
             return { ...state, users: action.users }
@@ -59,7 +60,7 @@ const usersReducer = (
                     ? [...state.followingInProgress, action.userId] //
                     : state.followingInProgress.filter(
                           (id) => id != action.userId
-                      ),
+                      )
             }
         }
         default:
@@ -86,20 +87,26 @@ export const actions = {
         ({
             type: 'sn/users/toggle_is_following_progress',
             isFetching,
-            userId,
-        } as const),
+            userId
+        } as const)
 }
 
 export const requestUsers = (
     page: number,
     pageSize: number,
     filter: FilterType
-): ThunkType => { //NOTE - используя 2 способ больше нет нужны thunk'e принимать getState, и () dispatch больше не нужно типизировать, все типизируется в ThunkAction: <возвращается тип рез-та (), в нашем случае Promise<резолвится void'ом>, дальше передается State store'a, дальше Extra аргументы (возможно замена использования замыкания), и Action
-    return async (dispatch) => { 
+): ThunkType => {
+    //NOTE - используя 2 способ больше нет нужны thunk'e принимать getState, и () dispatch больше не нужно типизировать, все типизируется в ThunkAction: <возвращается тип рез-та (), в нашем случае Promise<резолвится void'ом>, дальше передается State store'a, дальше Extra аргументы (возможно замена использования замыкания), и Action
+    return async (dispatch) => {
         dispatch(actions.toggleIsFetching(true))
         dispatch(actions.setCurrentPage(page))
         dispatch(actions.setFilter(filter)) //NOTE - сетается filter
-        let data = await usersAPI.getUsers(page, pageSize, filter.term, filter.friend) // куда передаются типы каждого action'a в {} action
+        let data = await usersAPI.getUsers(
+            page,
+            pageSize,
+            filter.term,
+            filter.friend
+        ) // куда передаются типы каждого action'a в {} action
         dispatch(actions.toggleIsFetching(false))
         dispatch(actions.setUsers(data.items))
         dispatch(actions.setTotalUsersCount(data.totalCount))
@@ -123,7 +130,7 @@ const _followUnfollowFlow = async (
     dispatch(actions.toggleFollowingProgress(false, userId))
 }
 
-export const follow =
+export const followUser =
     (userId: number): ThunkType =>
     async (dispatch) => {
         await _followUnfollowFlow(
@@ -133,7 +140,7 @@ export const follow =
             actions.followSuccess
         )
     }
-export const unfollow =
+export const unfollowUser =
     (userId: number): ThunkType =>
     async (dispatch) => {
         await _followUnfollowFlow(

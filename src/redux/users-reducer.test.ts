@@ -1,4 +1,4 @@
-import usersReducer, { InitialStateType, actions } from "./users-reducer";
+import usersReducer, { InitialStateType, actions, FilterType } from "./users-reducer";
 
 // 6. Так как state будет использоваться в каждом тесте - выносим его наружу, а тест будет брать state из замыкания
 let state: InitialStateType;
@@ -43,6 +43,7 @@ beforeEach(() => {
     currentPageNumber: 1,
     isFetching: false,
     followingInProgress: [],
+    // filter: {'d', true}
   };
 });
 

@@ -1,18 +1,18 @@
-import React from 'react';
-import { actions } from '../../../redux/profile-reducer';
-import MyPosts, { DispatchPropsType, MapPropsType } from './MyPosts';
-import { connect } from 'react-redux';
-import { RootState } from '../../../redux/redux-store';
+// import React from 'react';
+// import { actions } from '../../../redux/profile-reducer';
+// import MyPosts, { DispatchPropsType, MapPropsType } from './MyPosts';
+// import { connect } from 'react-redux';
+// import { RootState } from '../../../redux/redux-store';
 
-const mapStateToProps = (state: RootState) => {
-    return {
-        posts: state.profilePage.posts
-    }
-}
+// const mapStateToProps = (state: RootState) => {
+//     return {
+//         posts: state.profilePage.posts
+//     }
+// }
 
-const MyPostsContainer = connect<MapPropsType, DispatchPropsType, {}, RootState>(
-    mapStateToProps,
-    { addPost: actions.addPost }
-)(MyPosts);
+// const MyPostsContainer = connect<MapPropsType, DispatchPropsType, {}, RootState>(
+//     mapStateToProps,
+//     { addPost: actions.addPost }
+// )(MyPosts);
 
-export default MyPostsContainer;
+// export default MyPostsContainer;

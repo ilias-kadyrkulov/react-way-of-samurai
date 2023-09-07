@@ -1,4 +1,4 @@
-import { Action, configureStore } from "@reduxjs/toolkit"
+import { Action, combineReducers, configureStore } from "@reduxjs/toolkit"
 import profileReducer from "./profile-reducer"
 import dialogsReducer from "./dialogs-reducer"
 import sidebarReducer from "./sidebar-reducer"
@@ -8,7 +8,7 @@ import thunk, { ThunkAction } from 'redux-thunk'
 import { reducer as formReducer } from 'redux-form'
 import appReducer from "./app-reducer"
 
-const reducers = {
+const reducers = combineReducers({
     profilePage: profileReducer,
     dialogsPage: dialogsReducer,
     sidebar: sidebarReducer,
@@ -16,7 +16,7 @@ const reducers = {
     auth: authReducer,
     form: formReducer,
     app: appReducer
-}
+})
 
 export const store = configureStore({
     reducer: reducers,
@@ -24,6 +24,7 @@ export const store = configureStore({
 })
 
 export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
 
 // type PropertiesTypes<T> = T extends {[key: string]: infer U } ? U : never // conditional type (infer, mapped type), т.е. Generic тип, 
 // export type InferActionsTypes<T extends {[key: string]: (...args: any) => any }> = ReturnType<PropertiesTypes<T>> // constraint, 

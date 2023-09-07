@@ -2,7 +2,7 @@
 
 import { APIResponseType, ResultCodesEnum } from "../api/api";
 import { usersAPI } from "../api/users-api";
-import { actions, follow, unfollow } from "./users-reducer";
+import { actions, followUser, unfollowUser } from "./users-reducer";
 
 // 1. В тестировании thunk нужно тестировать только thunk'у. Не взаимодействие двух unit'ов (thunk'и и API), не важно , что может быть ошибка.
 //    Мы тестируем thunk'у, соответственно нужно сделать это в изоляции. Как? Дальше.
@@ -41,7 +41,7 @@ test("success follow thunk", async () => {
   // 3. Поэтому мы для начала создадим fake() для dispatch.
   // 3.1. Исходные, подготовительные данные, как и раньше.
 
-  const thunk = follow(1);
+  const thunk = followUser(1);
 
   // 3.2. Дальше непосредственно action
 
@@ -59,7 +59,7 @@ test("success unfollow thunk", async () => {
   // 3. Поэтому мы для начала создадим fake() для dispatch.
   // 3.1. Исходные, подготовительные данные, как и раньше.
 
-  const thunk = unfollow(1);
+  const thunk = unfollowUser(1);
 
   // 3.2. Дальше непосредственно action
 

@@ -13,49 +13,66 @@ import userPhoto from '../../../assets/images/user.png'
 import ProfileDataForm from './ProfileDataForm/ProfileDataForm'
 import ProfileData from './ProfileDataForm/ProfileData'
 import { ProfileType } from '../../../types/types'
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux'
+import { savePhoto, saveProfile } from './../../../redux/profile-reducer'
 
 type PropsType = {
-    profile: ProfileType | null
-    status: string
-    profileUpdateStatus: boolean
     isOwner: boolean
-    
-    savePhoto: (file: File) => void
-    saveProfile: (profile: ProfileType) => void
-    updateStatus: (status: string) => void
 }
 
-const ProfileInfo: FC<PropsType> = ({ profile, status, updateStatus, isOwner, savePhoto, saveProfile, profileUpdateStatus }) => {
-    const [editMode, setEditMode] = useState(false);
+const ProfileInfo: FC<PropsType> = ({ isOwner }) => {
+    const profile = useAppSelector((state) => state.profilePage.profile)
+    const profileUpdateStatus = useAppSelector(
+        (state) => state.profilePage.profileUpdateStatus
+    )
+
+    const dispatch = useAppDispatch()
+
+    const [editMode, setEditMode] = useState(false)
+
+    const onMainPhotoChanged = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files?.length) dispatch(savePhoto(e.target.files[0]))
+    }
+
+    const onSubmit = (formData: ProfileType) => {
+        dispatch(saveProfile(formData))
+        if (profileUpdateStatus) {
+            setEditMode(false)
+        }
+    }
 
     if (!profile) {
         return <Preloader />
     }
 
-    const onMainPhotoChanged = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files?.length) savePhoto(e.target.files[0])
-    }
-
-    const onSubmit = (formData: ProfileType) => {
-        saveProfile(formData);
-        if (profileUpdateStatus) {
-            setEditMode(false);
-        }
-    }
-
     return (
         <div>
             <div className={styles.profileDesc}>
-                <img className={styles.userAvatar}
-                    src={profile.photos.large || userPhoto} />
-                {isOwner && <input type={'file'} onChange={onMainPhotoChanged} />}
+                <img
+                    className={styles.userAvatar}
+                    src={profile.photos.large || userPhoto}
+                />
+                {isOwner && (
+                    <input type={'file'} onChange={onMainPhotoChanged} />
+                )}
 
-                {editMode
-                    ? <ProfileDataForm initialValues={profile} profile={profile} onSubmit={onSubmit} />
-                    : <ProfileData profile={profile} isOwner={isOwner} goToEditMode={() => { setEditMode(true) }} />
-                }
+                {editMode ? (
+                    <ProfileDataForm
+                        initialValues={profile}
+                        profile={profile}
+                        onSubmit={onSubmit}
+                    />
+                ) : (
+                    <ProfileData
+                        profile={profile}
+                        isOwner={isOwner}
+                        goToEditMode={() => {
+                            setEditMode(true)
+                        }}
+                    />
+                )}
 
-                <ProfileStatusWithHooks status={status} updateStatus={updateStatus} />
+                <ProfileStatusWithHooks />
             </div>
         </div>
     )

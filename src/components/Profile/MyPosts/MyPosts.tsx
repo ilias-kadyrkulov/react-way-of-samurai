@@ -3,18 +3,17 @@ import styles from './MyPosts.module.css'
 import Post from './Post/Post'
 import AddNewPostForm, { AddPostFormValuesType } from './AddNewPostForm/AddNewPostForm'
 import { PostType } from '../../../types/types'
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux'
+import { actions } from '../../../redux/profile-reducer'
 
-export type MapPropsType = {
-    posts: Array<PostType>
-}
-export type DispatchPropsType = {
-    addPost: (newPostText: string) => void
-}
 
-const MyPosts: FC<MapPropsType & DispatchPropsType> = (props) => {
+const MyPosts: FC = (props) => {
+    const posts = useAppSelector(state => state.profilePage.posts)
+
+    const dispatch = useAppDispatch()
 
     const addNewPost = (formData: AddPostFormValuesType) => {
-        props.addPost(formData.newPostText);
+        dispatch(actions.addPost(formData.newPostText))
     }
 
     return (
@@ -25,7 +24,7 @@ const MyPosts: FC<MapPropsType & DispatchPropsType> = (props) => {
             </div>
 
             <div className={styles.posts}>
-                {props.posts.map(post =>
+                {posts.map(post =>
                     <Post key={post.id} message={post.message} likesCount={post.likesCount} />
                 )}
             </div>
