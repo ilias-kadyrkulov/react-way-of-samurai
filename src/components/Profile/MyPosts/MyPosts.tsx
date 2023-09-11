@@ -2,7 +2,6 @@ import React, { FC } from 'react'
 import styles from './MyPosts.module.css'
 import Post from './Post/Post'
 import AddNewPostForm, { AddPostFormValuesType } from './AddNewPostForm/AddNewPostForm'
-import { PostType } from '../../../types/types'
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux'
 import { actions } from '../../../redux/profile-reducer'
 

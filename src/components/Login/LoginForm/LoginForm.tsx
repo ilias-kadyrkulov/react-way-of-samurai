@@ -1,40 +1,56 @@
 import React, { FC } from 'react'
-import styles from '../../common/FormsControls/FormsControls.module.css'
-import { InjectedFormProps, reduxForm } from 'redux-form'
-import { GetStringKeys, Input, createField } from '../../common/FormsControls/FormsControls'
-import { required } from '../../../utils/validators/validators'
+import { Button, Checkbox, Form, Input } from 'antd'
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux'
+import { login } from '../../../redux/auth-reducer'
 
-type PropsType = {
-    captchaUrl: string | null
-}
-
-const LoginForm: FC<InjectedFormProps<LoginFormValuesType, PropsType> & PropsType> = ({ handleSubmit, error, captchaUrl }) => {
-    return (
-        <form onSubmit={handleSubmit}>
-            {createField<LoginFormValuesTypeKeys>('E-mail', 'email', [required], Input)}
-            {createField<LoginFormValuesTypeKeys>('Password', 'password', [required], Input, { type: 'password' })}
-            {createField<LoginFormValuesTypeKeys>(undefined, 'rememberMe', [], Input, { type: 'checkbox' }, 'Remember me')}
-            {error &&
-                <div className={styles.formSummaryControl}>
-                    {error}
-                </div>
-            }
-            {captchaUrl && <img src={captchaUrl} />}
-            {captchaUrl && createField<LoginFormValuesTypeKeys>('Symbols from image', 'captcha', [required], Input)}
-            <div>
-                <button>Login</button>
-            </div>
-        </form>
-    )
-}
-
-export type LoginFormValuesType = {
+type FieldType = {
     email: string
     password: string
     rememberMe: boolean
     captcha: string
 }
 
-type LoginFormValuesTypeKeys = GetStringKeys<LoginFormValuesType>
+export const LoginForm: FC = (props) => {
+    const captchaUrl = useAppSelector((state) => state.auth.captchaUrl)
 
-export default reduxForm<LoginFormValuesType, PropsType>({ form: 'login' })(LoginForm)
+    const dispatch = useAppDispatch()
+
+    const handleLogin = (values: FieldType) => {
+        const { email, password, rememberMe, captcha } = values
+        dispatch(login(email, password, rememberMe, captcha))
+    }
+
+    return (
+        <Form onFinish={handleLogin}>
+            <Form.Item<FieldType>
+                name="email"
+                rules={[{ required: true, message: 'Required field.' }]}
+            >
+                <Input />
+            </Form.Item>
+            <Form.Item<FieldType>
+                name="password"
+                rules={[{ required: true, message: 'Required field.' }]}
+            >
+                <Input.Password />
+            </Form.Item>
+            <Form.Item name="rememberMe" valuePropName="checked">
+                <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+            {captchaUrl && <img src={captchaUrl} />}
+            {captchaUrl && (
+                <Form.Item<FieldType>
+                    name="captcha"
+                    rules={[{ required: true, message: 'Required field.' }]}
+                >
+                    <Input />
+                </Form.Item>
+            )}
+            <Form.Item>
+                <Button type="primary" htmlType="submit">
+                    Login
+                </Button>
+            </Form.Item>
+        </Form>
+    )
+}

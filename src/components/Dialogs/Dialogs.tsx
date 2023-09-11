@@ -1,47 +1,35 @@
-import React, { FC } from "react";
-import styles from "./Dialogs.module.css";
-import DialogItem from "./DialogItem/DialogItem";
-import MessageItem from "./MessageItem/MessageItem";
-import AddMessageForm from "./AddMessageForm/AddMessageForm";
-import { InitialStateType } from "../../redux/dialogs-reducer";
+import React, { FC } from 'react'
+import styles from './Dialogs.module.css'
+import DialogItem from './DialogItem/DialogItem'
+import MessageItem from './MessageItem/MessageItem'
+import { useAppSelector } from '../../hooks/redux'
+import { Navigate } from 'react-router-dom'
+import { AddMessageForm } from './AddMessageForm/AddMessageForm'
 
-export type MapPropsType = {
-  dialogsPage: InitialStateType;
-};
+const Dialogs: FC = (props) => {
+    const isAuth = useAppSelector(state => state.auth.isAuth)
+    const dialogs = useAppSelector(state => state.dialogsPage.dialogs)
+    const messages = useAppSelector(state => state.dialogsPage.messages)
 
-export type DispatchPropsType = {
-  sendMessage: (newMessageBody: string) => void;
-};
+    if(!isAuth) return <Navigate to='/login' />
 
-export type NewMessageFormValuesType = {
-  newMessageBody: string;
-};
+    return (
+        <div className={styles.dialogs}>
+            <div className={styles.dialogsItems}>
+                {dialogs.map((d) => (
+                    <DialogItem key={d.id} id={d.id} name={d.name} />
+                ))}
+            </div>
 
-const Dialogs: FC<MapPropsType & DispatchPropsType> = (props) => {
-  let state = props.dialogsPage;
+            <div className={styles.messages}>
+                {messages.map((m) => (
+                    <MessageItem key={m.id} message={m.message} />
+                ))}
+            </div>
 
-  const addNewMessage = (formData: NewMessageFormValuesType) => {
-    props.sendMessage(formData.newMessageBody);
-  };
+            <AddMessageForm />
+        </div>
+    )
+}
 
-  return (
-    <div className={styles.dialogs}>
-      <div className={styles.dialogsItems}>
-        {state.dialogs.map((d) => (
-          <DialogItem key={d.id} id={d.id} name={d.name} />
-        ))}
-      </div>
-      <ul className={styles}>
-        <li></li>
-      </ul>
-      <div className={styles.messages}>
-        {state.messages.map((m) => (
-          <MessageItem key={m.id} message={m.message} />
-        ))}
-      </div>
-      <AddMessageForm onSubmit={addNewMessage} />
-    </div>
-  );
-};
-
-export default Dialogs;
+export default Dialogs

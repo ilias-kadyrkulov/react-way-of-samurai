@@ -1,26 +1,32 @@
 import React, { FC } from 'react'
-import { Textarea, createField } from '../../common/FormsControls/FormsControls'
-import { InjectedFormProps, reduxForm } from 'redux-form'
-import { maxLengthCreator, required } from '../../../utils/validators/validators'
-import { NewMessageFormValuesType } from '../Dialogs';
+import { Button, Form, Input } from 'antd'
+import { actions } from '../../../redux/dialogs-reducer'
+import { useAppDispatch } from '../../../hooks/redux'
 
-const maxLength50 = maxLengthCreator(50);
-
-type NewMessageFormOwnProps = {}
-
-type NewMessageFormValuesTypeKeys = Extract<keyof NewMessageFormValuesType, string>
-
-const AddMessageForm: FC<InjectedFormProps<NewMessageFormValuesType, NewMessageFormOwnProps> & NewMessageFormOwnProps> = (props) => {
-    return (
-        <form onSubmit={props.handleSubmit}>
-            <div>
-                {createField<NewMessageFormValuesTypeKeys> ('Enter your message', 'newMessageBody', [required, maxLength50], Textarea)}
-            </div>
-            <div>
-                <button>Send</button>
-            </div>
-        </form>
-    )
+type FieldType = {
+    newMessageBody: string
 }
 
-export default reduxForm<NewMessageFormValuesType, NewMessageFormOwnProps>({ form: 'dialogAddMessageForm' })(AddMessageForm)
+export const AddMessageForm: FC = (props) => {
+    const dispatch = useAppDispatch()
+
+    const handleAddNewMessage = (values: FieldType) => {
+        dispatch(actions.sendMessage(values.newMessageBody))
+    }
+
+    return (
+        <Form onFinish={handleAddNewMessage}>
+            <Form.Item<FieldType>
+                name="newMessageBody"
+                rules={[{ required: true, message: 'Required field.' }]}
+            >
+                <Input.TextArea />
+            </Form.Item>
+            <Form.Item>
+                <Button type="primary" htmlType="submit">
+                    Send
+                </Button>
+            </Form.Item>
+        </Form>
+    )
+}
