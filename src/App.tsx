@@ -34,17 +34,17 @@ const App: FC<MapPropsType & DispatchPropsType> = (props) => {
     return (
         <Suspense fallback={<Preloader />}>
             <Routes>
-                <Route path="/" element={<MainLayout />}>
+                <Route path="/react-way-of-samurai/" element={<MainLayout />}>
                     <Route index element={<ProfilePage />} />
-                    <Route path="profile/:userId?" element={<ProfilePage />} />
-                    <Route path="messages" element={<Dialogs />} />
+                    <Route path="/react-way-of-samurai/profile/:userId?" element={<ProfilePage />} />
+                    <Route path="/react-way-of-samurai/messages" element={<Dialogs />} />
                     <Route
-                        path="developers"
+                        path="/react-way-of-samurai/developers"
                         element={<UsersPage pageTitle="The Samurai" />}
                     />
-                    <Route path="login" element={<LoginPage />} />
-                    <Route path="chat" element={<ChatPage />} />
-                    <Route path="*" element={<div>NOT FOUND PAGE</div>} />
+                    <Route path="/react-way-of-samurai/login" element={<LoginPage />} />
+                    <Route path="/react-way-of-samurai/chat" element={<ChatPage />} />
+                    <Route path="/react-way-of-samurai/*" element={<div>NOT FOUND PAGE</div>} />
                 </Route>
             </Routes>
         </Suspense>

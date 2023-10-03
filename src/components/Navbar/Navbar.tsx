@@ -9,17 +9,17 @@ const Navbar: FC = () => {
     return (
         <nav className='nav'>
             <div>
-                <NavLink to='/profile' className={setActive}>
+                <NavLink to='/react-way-of-samurai/profile' className={setActive}>
                     Profile
                 </NavLink>
             </div>
             <div>
-                <NavLink to='/dialogs' className={setActive}>
+                <NavLink to='/react-way-of-samurai/dialogs' className={setActive}>
                     Messages
                 </NavLink>
             </div>
             <div>
-                <NavLink to='/users' className={setActive}>
+                <NavLink to='/react-way-of-samurai/users' className={setActive}>
                     Users
                 </NavLink>
             </div>
@@ -32,7 +32,7 @@ const Navbar: FC = () => {
             <div>
                 <a>Settings</a>
             </div>
-            <CustomLink to='/dialogs'>
+            <CustomLink to='/react-way-of-samurai/dialogs'>
                 useMatch Dialogs
             </CustomLink>
         </nav>

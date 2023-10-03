@@ -26,7 +26,7 @@ const ProfilePage: FC = (props) => {
         dispatch(getUserStatus(+userId))
     }, [userId])
 
-    if(!isAuth) return <Navigate to='/login' />
+    if(!isAuth) return <Navigate to='/react-way-of-samurai/login' />
 
     return <Profile isOwner={!userId} />
 }

@@ -7,11 +7,11 @@ import { Navigate } from 'react-router-dom'
 import { AddMessageForm } from './AddMessageForm/AddMessageForm'
 
 const Dialogs: FC = (props) => {
-    const isAuth = useAppSelector(state => state.auth.isAuth)
-    const dialogs = useAppSelector(state => state.dialogsPage.dialogs)
-    const messages = useAppSelector(state => state.dialogsPage.messages)
+    const isAuth = useAppSelector((state) => state.auth.isAuth)
+    const dialogs = useAppSelector((state) => state.dialogsPage.dialogs)
+    const messages = useAppSelector((state) => state.dialogsPage.messages)
 
-    if(!isAuth) return <Navigate to='/login' />
+    if (!isAuth) return <Navigate to="/react-way-of-samurai/login" />
 
     return (
         <div className={styles.dialogs}>

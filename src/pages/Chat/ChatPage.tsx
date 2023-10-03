@@ -1,7 +1,7 @@
 import { Button, Form, Input, notification } from 'antd'
 import { SmileOutlined } from '@ant-design/icons'
-import React, { FC, useEffect, useState } from 'react'
-import { ChatMessageType } from '../../api/chat-api'
+import React, { FC, useEffect, useRef, useState } from 'react'
+import { ChatMessageAPIType } from '../../api/chat-api'
 import {
     startMessagesListening,
     stopMessagesListening
@@ -13,9 +13,7 @@ const ChatPage: FC = () => {
     return <Chat />
 }
 const Chat: FC = () => {
-    const [channelStatus, setChannelStatus] = useState<
-        'online' | 'offline' | null
-    >(null)
+    const status = useAppSelector((state) => state.chat.status)
 
     const dispatch = useAppDispatch()
 
@@ -28,42 +26,76 @@ const Chat: FC = () => {
     }, [])
 
     return (
-        <>
-            {channelStatus === 'offline' && <Notification />}
-            <Messages />
-            <AddMessageForm />
-        </>
+        <div>
+            {status === 'error' && <Notification />}
+            <>
+                <Messages />
+                <AddMessageForm />
+            </>
+        </div>
     )
 }
 
 const Messages: FC = () => {
     const messages = useAppSelector((state) => state.chat.messages)
 
+    const [isAutoScroll, setIsAutoScroll] = useState(false)
+    const messageAnchorRef = useRef<HTMLDivElement>(null)
+
+    const scrollHandler = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+        const element = e.currentTarget
+        if (
+            Math.abs(element.scrollHeight - element.scrollTop) -
+                element.clientHeight <
+            300
+        ) {
+            !isAutoScroll && setIsAutoScroll(true)
+        } else {
+            isAutoScroll && setIsAutoScroll(false)
+        }
+    }
+
+    useEffect(() => {
+        if (isAutoScroll) {
+            messageAnchorRef.current?.scrollIntoView({ behavior: 'smooth' })
+        }
+    }, [messages])
+
     return (
-        <div style={{ height: '400px', overflowY: 'auto' }}>
+        <div
+            style={{ height: '400px', overflowY: 'auto' }}
+            onScroll={scrollHandler}
+        >
             {messages.map((m, index) => (
                 <Message key={index} message={m} />
             ))}
+            <div ref={messageAnchorRef}></div>
         </div>
     )
 }
 
-const Message: FC<{ message: ChatMessageType }> = ({ message }) => {
-    return (
-        <div>
-            <img style={{ height: '40px' }} src={message.photo} alt="Avatar" />{' '}
-            <b>{message.userName}</b>
-            <br />
-            {message.message}
-            <hr />
-        </div>
-    )
-}
+const Message: FC<{ message: ChatMessageAPIType }> = React.memo(
+    ({ message }) => {
+        console.log('message')
+
+        return (
+            <div>
+                <img
+                    style={{ height: '40px' }}
+                    src={message.photo}
+                    alt="Avatar"
+                />{' '}
+                <b>{message.userName}</b>
+                <br />
+                {message.message}
+                <hr />
+            </div>
+        )
+    }
+)
 
 const AddMessageForm: FC = () => {
-    const [readyStatus, setReadyStatus] = useState<'pending' | 'ready'>(
-        'pending'
-    ) //NOTE - 119.1; Создается local state readyStatus (wsChannel.readyState !== WebSocket.OPEN), кот. м.б. только pending или ready
+    const status = useAppSelector((state) => state.chat.status)
 
     const dispatch = useAppDispatch()
 
@@ -78,7 +110,11 @@ const AddMessageForm: FC = () => {
                     <Input.TextArea />
                 </Form.Item>
                 <Form.Item>
-                    <Button disabled={false} type="primary" htmlType="submit">
+                    <Button
+                        disabled={status !== 'ready'}
+                        type="primary"
+                        htmlType="submit"
+                    >
                         Send
                     </Button>
                 </Form.Item>
@@ -91,9 +127,8 @@ const Notification: FC = (props) => {
     const [api, contextHolder] = notification.useNotification()
 
     api.open({
-        message: 'Notification Title',
-        description:
-            'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+        message: 'Error occured',
+        description: 'Please refresh the page.',
         icon: <SmileOutlined style={{ color: '#108ee9' }} />
     })
 

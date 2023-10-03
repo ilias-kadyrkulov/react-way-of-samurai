@@ -13,15 +13,15 @@ let initialState = {
     messages: [
         { id: 1, message: 'Hi' },
         { id: 2, message: 'Coding' },
-        { id: 3, message: 'Jiza' }
+        { id: 3, message: 'Goog, good' }
     ] as Array<MessageType>,
     dialogs: [
-        { id: 1, name: 'Purira' },
-        { id: 2, name: 'Pureira' },
-        { id: 3, name: 'Purrito' },
-        { id: 4, name: 'Perrito' },
-        { id: 5, name: 'Ursulla' },
-        { id: 6, name: 'Ursuliha' }
+        { id: 1, name: 'Sardar' },
+        { id: 2, name: 'Dias' },
+        { id: 3, name: 'Vishu' },
+        { id: 4, name: 'Bayel' },
+        { id: 5, name: 'Akbar' },
+        { id: 6, name: 'Andrei' }
     ] as Array<DialogType>
 }
 

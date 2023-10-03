@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
 import styles from '../ProfileInfo.module.css'
-import facebookIcon from '../../../../assets/icons/facebook.svg'
 import { ContactsType, ProfileType } from '../../../../types/types'
 
 type PropsType = {
@@ -44,7 +43,7 @@ type ContactsPropsType = {
 
 const Contact: FC<ContactsPropsType> = ({ contactTitle, contactValue }) => {
     return <div className={styles.contact}>
-        <img className={styles.icon} src={facebookIcon} /> <b>{contactTitle}</b>: {contactValue}
+        <img className={styles.icon} /> <b>{contactTitle}</b>: {contactValue}
     </div>
 }
 

@@ -8,7 +8,5 @@ dns.setDefaultResultOrder('verbatim')
 export default defineConfig({
   // base: "/react-way-of-samurai",
   plugins: [react()],
-  server: {
-    port: 3000
-  }
+  base: '/react-way-of-samurai/'
 })

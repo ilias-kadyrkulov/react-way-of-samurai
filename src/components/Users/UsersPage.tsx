@@ -13,7 +13,7 @@ export const UsersPage: FC<PropsType> = (props) => {
     const isFetching = useAppSelector(getIsFetching)
     const isAuth = useAppSelector(state => state.auth.isAuth)
 
-    if(!isAuth) return <Navigate to='/login' />
+    if(!isAuth) return <Navigate to='/react-way-of-samurai/login' />
 
     return (
         <>

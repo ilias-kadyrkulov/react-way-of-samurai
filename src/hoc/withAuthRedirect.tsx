@@ -16,7 +16,7 @@ type DispatchPropsType = {}
 export function withAuthRedirect<WCP extends MapPropsType>(WrappedComponent: ComponentType<WCP>) {
   const RedirectComponent: FC<MapPropsType & DispatchPropsType> = (props) => {
     let { isAuth, ...restProps } = props
-    if (!isAuth) return <Navigate to='/login' />
+    if (!isAuth) return <Navigate to='/react-way-of-samurai/login' />
     return <WrappedComponent {...restProps as WCP} />
 
   }

@@ -14,7 +14,7 @@ const User: React.FC<PropsType> = ({ user, followingInProgress, unfollow, follow
     return <div style={{marginLeft: "15px"}}>
         <span>
             <div>
-                <NavLink to={"/profile/" + user.id}>
+                <NavLink to={"/react-way-of-samurai/profile/" + user.id}>
                     <img src={user.photos.small != null ? user.photos.small
                         : 'https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png'}
                         className={styles.userPhoto}

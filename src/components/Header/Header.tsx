@@ -9,22 +9,22 @@ import { selectIsAuth, selectLogin } from '../../redux/auth-selectors'
 
 const navItems: MenuProps['items'] = [
     {
-        label: <Link to="/profile">My Profile</Link>,
+        label: <Link to="/react-way-of-samurai/profile">My Profile</Link>,
         key: 'profile',
         icon: <UserOutlined />
     },
     {
-        label: <Link to="/messages">Messages</Link>,
+        label: <Link to="/react-way-of-samurai/messages">Messages</Link>,
         key: 'messages',
         icon: <MessageOutlined />
     },
     {
-        label: <Link to="/developers">Developers</Link>,
+        label: <Link to="/react-way-of-samurai/developers">Developers</Link>,
         key: 'developers',
         icon: <LaptopOutlined />
     },
     {
-        label: <Link to="/chat">Chat</Link>,
+        label: <Link to="/react-way-of-samurai/chat">Chat</Link>,
         key: 'chat',
         icon: <WechatOutlined />
     }
@@ -64,7 +64,7 @@ const Header: FC = (props) => {
                         </>
                     ) : (
                         <Col span={6}>
-                            <Link to="/login">Login</Link>
+                            <Link to="/react-way-of-samurai/login">Login</Link>
                         </Col>
                     )}
                 </Row>

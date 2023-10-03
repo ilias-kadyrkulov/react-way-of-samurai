@@ -6,7 +6,7 @@ import { useAppSelector } from '../../hooks/redux'
 export const LoginPage: FC = (props) => {
     const isAuth = useAppSelector((state) => state.auth.isAuth)
 
-    if (isAuth) return <Navigate to="/profile" />
+    if (isAuth) return <Navigate to="/react-way-of-samurai/profile" />
 
     return (
         <>
